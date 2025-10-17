@@ -5,7 +5,10 @@ import * as express from 'express';
 import { join } from 'path';
 
 async function bootstrap() {
-  dotenv.config();
+
+  dotenv.config({ override: true });
+
+
   const app = await NestFactory.create(AppModule);
   app.enableCors();
 
