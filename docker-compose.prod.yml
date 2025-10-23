@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  backend:
+    image: ivinaybhagwat/ai-resume-parser-backend:latest
+    ports:
+      - "3000:3000"
+    environment:
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - GOOGLE_API_KEY=${GOOGLE_API_KEY}
+      - NODE_ENV=production
+    restart: unless-stopped
+
+  frontend:
+    image: ivinaybhagwat/ai-resume-parser-ui:latest
+    ports:
+      - "5173:5173"
+    environment:
+      - VITE_API_URL=http://localhost:3000
+    depends_on:
+      - backend
+    restart: unless-stopped
