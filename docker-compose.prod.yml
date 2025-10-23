@@ -6,17 +6,25 @@ services:
     ports:
       - "3000:3000"
     environment:
-      - OPENAI_API_KEY=${OPENAI_API_KEY}
-      - GOOGLE_API_KEY=${GOOGLE_API_KEY}
+      - AI_API_KEY=${AI_API_KEY}
+      - AI_PROVIDER=${AI_PROVIDER:-openai}
+      - AI_MODEL=${AI_MODEL:-gpt-4}
       - NODE_ENV=production
+      - PORT=3000
     restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:3000/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
 
   frontend:
     image: ivinaybhagwat/ai-resume-parser-ui:latest
     ports:
       - "5173:5173"
     environment:
-      - VITE_API_URL=http://localhost:3000 # Or your actual backend URL in production
+      - VITE_API_URL=http://localhost:3000
     depends_on:
       - backend
     restart: unless-stopped
@@ -26,3 +34,7 @@ services:
       timeout: 10s
       retries: 3
       start_period: 10s
+
+networks:
+  default:
+    driver: bridge
