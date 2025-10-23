@@ -1,25 +1,100 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# AI Resume Parser Backend Service
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+This service provides AI-powered resume parsing capabilities using OpenAI or Google's Gemini models.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## Quick Start with Docker
+
+### Prerequisites
+- Docker installed on your system
+- OpenAI API key and/or Google API key
+
+### Running the Container
+
+1. Pull and run the container:
+```bash
+docker run -d 
+  -p 3000:3000 
+  -e OPENAI_API_KEY=your_openai_api_key 
+  -e GOOGLE_API_KEY=your_google_api_key 
+  -e DEFAULT_AI_PROVIDER=openai 
+  --name resume-parser 
+  your-registry/ai-resume-parser-backend:latest
+```
+
+### Environment Variables
+
+| Variable | Description | Required | Default |
+|----------|-------------|----------|---------|
+| OPENAI_API_KEY | Your OpenAI API key | Yes (if using OpenAI) | - |
+| GOOGLE_API_KEY | Your Google API key | Yes (if using Gemini) | - |
+| DEFAULT_AI_PROVIDER | AI provider to use (openai/gemini) | No | openai |
+| PORT | Port to run the service on | No | 3000 |
+| NODE_ENV | Node environment | No | production |
+
+### API Endpoints
+
+#### Parse Resume
+- **POST** `/api/resume-parser/parse`
+- **Content-Type**: application/json
+- **Request Body**:
+```json
+{
+  "content": "Resume text content here...",
+  "provider": "openai" // or "gemini", optional
+}
+```
+
+#### Health Check
+- **GET** `/health`
+- Returns 200 OK if service is healthy
+
+### Building the Image Locally
+
+1. Clone the repository:
+```bash
+git clone <repository-url>
+cd ai-resume-parser/ai-resume-parser-backend
+```
+
+2. Build the Docker image:
+```bash
+docker build -t ai-resume-parser-backend .
+```
+
+3. Run the container:
+```bash
+docker run -d 
+  -p 3000:3000 
+  -e OPENAI_API_KEY=your_openai_api_key 
+  -e GOOGLE_API_KEY=your_google_api_key 
+  --name resume-parser 
+  ai-resume-parser-backend
+```
+
+### Security Features
+- Runs as non-root user
+- Uses multi-stage build for smaller image size
+- Contains health check endpoint
+- Production-only dependencies in final image
+
+### Monitoring
+The service includes a health check endpoint that can be used with container orchestration platforms.
+
+### Troubleshooting
+1. Check logs:
+```bash
+docker logs resume-parser
+```
+
+2. Check health status:
+```bash
+docker inspect resume-parser | grep Health
+```
+
+3. Access the container:
+```bash
+docker exec -it resume-parser sh
+```
 
 ## Description
 
