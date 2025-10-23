@@ -99,7 +99,9 @@ export default function ResumeUploadForm() {
       else if (ext === "docx") extractedText = await extractTextFromDocx(file);
       else throw new Error("Unsupported file type.");
 
-      const res = await axios.post("http://localhost:3000/resume-parser/parse", {
+      // Get API URL from runtime config or fallback to Vite env
+      const apiUrl = window.VITE_API_URL || import.meta.env.VITE_API_URL || 'http://localhost:3000';
+      const res = await axios.post(`${apiUrl}/api/resume-parser/parse`, {
         text: extractedText,
       });
 
