@@ -1,5 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { AIProviderFactory } from '../ai/ai.factory';
+import { OnEvent } from '@nestjs/event-emitter';
 
 @Injectable()
 export class ResumeParserService {
