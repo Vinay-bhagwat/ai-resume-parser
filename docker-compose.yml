@@ -28,9 +28,7 @@ services:
       - app-network
 
   backend:
-    build:
-      context: ./ai-resume-parser-backend
-      dockerfile: Dockerfile
+    image: ivinaybhagwat/ai-resume-parser-backend:latest
     ports:
       - "3000:3000"
     environment:
@@ -48,9 +46,7 @@ services:
     restart: unless-stopped
 
   frontend:
-    build:
-      context: ./ai-resume-parser-ui
-      dockerfile: Dockerfile
+    image: ivinaybhagwat/ai-resume-parser-ui:latest
     ports:
       - "5173:5173"
     depends_on:
